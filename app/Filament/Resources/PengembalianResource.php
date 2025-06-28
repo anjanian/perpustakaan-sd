@@ -1,22 +1,24 @@
 <?php
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\PengembalianResource\Pages;
-use App\Models\Peminjaman;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Enums\FiltersLayout;
+use Filament\Forms\Form;
+use App\Models\Peminjaman;
 use Filament\Tables\Table;
+use App\Models\Pengembalian;
+use Filament\Resources\Resource;
+use Filament\Tables\Enums\FiltersLayout;
+use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\PengembalianResource\Pages;
 
 class PengembalianResource extends Resource
 {
-    protected static ?string $model = Peminjaman::class;
+    protected static ?string $model = Pengembalian::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-arrow-down-tray';
 
-    protected static ?string $recordTitleAttribute = 'anggota.nama';
+    protected static ?string $recordTitleAttribute = 'pengembalian.peminjaman.anggota.nama';
 
     protected static ?string $navigationLabel = 'Pengembalian';
 
@@ -30,24 +32,28 @@ class PengembalianResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('id')
+                Forms\Components\Select::make('peminjaman_id')
                     ->label('Peminjaman')
-                    ->options(
-                        Peminjaman::with(['anggota', 'buku'])
-                            ->where('status', 'Dipinjam')
-                            ->get()
-                            ->mapWithKeys(function ($item) {
-                                return [
-                                    $item->id => $item->anggota->nama . ' - ' . $item->buku->judul,
-                                ];
-                            })
-                    )
+                    ->relationship('peminjaman', 'id')
+                    ->required()
                     ->searchable()
-                    ->required(),
+                    ->preload()
+                    ->getOptionLabelFromRecordUsing(fn($record) => $record->anggota->nama . ' - ' . $record->buku->judul)
+                    ->live()
+                    ->afterStateUpdated(function ($state, Forms\Set $set) {
+                        if ($state) {
+                            $peminjaman = Peminjaman::find($state);
+                            if ($peminjaman) {
+                                $set('tanggal_kembali', $peminjaman->tanggal_kembali);
+                            }
+                        }
+                    }),
+                Forms\Components\DatePicker::make('tanggal_kembali')
+                    ->label('Tanggal Kembali')
+                    ->readonly()
+                    ->reactive(),
                 Forms\Components\DatePicker::make('tanggal_pengembalian')
-                    ->default(now())
-                    ->label('Tanggal Pengembalian')
-                    ->required(),
+                    ->label('Tanggal Pengembalian'),
                 Forms\Components\Select::make('status')
                     ->options([
                         'Dikembalikan' => 'Dikembalikan',
@@ -56,42 +62,70 @@ class PengembalianResource extends Resource
                     ])
                     ->default('Dikembalikan')
                     ->required()
-                    ->live(),
+                    ->reactive(),
                 Forms\Components\TextInput::make('denda')
                     ->label('Denda')
+                    ->prefix('Rp ')
                     ->numeric()
-                    ->requiredIf('status', ['Terlambat', 'Hilang'])
-                    ->visible(fn($get) => in_array($get('status'), ['Terlambat', 'Hilang']))
-                    ->default(0),
+                    ->visible(fn($get) => $get('status') !== 'Dikembalikan')
+                    ->required(fn($get) => $get('status') !== 'Dikembalikan'),
+                Forms\Components\Textarea::make('catatan')
+                    ->columnSpanFull(),
             ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
-            ->query(Peminjaman::whereNot('status', 'Dipinjam'))
             ->columns([
-                Tables\Columns\TextColumn::make('anggota.nama')
+                Tables\Columns\TextColumn::make('peminjaman.anggota.nama')
                     ->label('Nama Anggota')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('buku.judul')
+                Tables\Columns\TextColumn::make('peminjaman.buku.judul')
                     ->label('Judul Buku')
                     ->searchable()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('tanggal_kembali')
+                    ->label('Tanggal Kembali')
+                    ->date('d F Y')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('tanggal_pengembalian')
                     ->label('Tanggal Pengembalian')
-                    ->date()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('denda')
-                    ->label('Denda')
-                    ->money('idr')
+                    ->date('d F Y')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status')
-                    ->label('Status')
+                    ->badge()
+                    ->color(fn(string $state): string => match ($state) {
+                        'Dikembalikan'                    => 'success',
+                        'Terlambat'                       => 'warning',
+                        'Hilang'                          => 'danger',
+                        default                           => 'gray',
+                    }),
+                Tables\Columns\TextColumn::make('denda')
+                    ->prefix('Rp ')
+                    ->numeric()
                     ->sortable(),
             ])
             ->filters([
+                Tables\Filters\Filter::make('tanggal_dari')
+                    ->form([
+                        Forms\Components\DatePicker::make('tanggal_dari')
+                            ->label('Tanggal Pengembalian Mulai'),
+                    ])
+                    ->query(function (Builder $query, array $data) {
+                        return $query
+                            ->when($data['tanggal_dari'], fn($q) => $q->whereDate('tanggal_pengembalian', '>=', $data['tanggal_dari']));
+                    }),
+                Tables\Filters\Filter::make('tanggal_sampai')
+                    ->form([
+                        Forms\Components\DatePicker::make('tanggal_sampai')
+                            ->label('Tanggal Pengembalian Sampai'),
+                    ])
+                    ->query(function (Builder $query, array $data) {
+                        return $query
+                            ->when($data['tanggal_sampai'], fn($q) => $q->whereDate('tanggal_pengembalian', '<=', $data['tanggal_sampai']));
+                    }),
                 Tables\Filters\SelectFilter::make('status')
                     ->options([
                         'Dikembalikan' => 'Dikembalikan',
@@ -101,6 +135,7 @@ class PengembalianResource extends Resource
                 Tables\Filters\TrashedFilter::make(),
             ], layout: FiltersLayout::AboveContent)
             ->actions([
+                Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
                 Tables\Actions\RestoreAction::make(),
                 Tables\Actions\ForceDeleteAction::make(),

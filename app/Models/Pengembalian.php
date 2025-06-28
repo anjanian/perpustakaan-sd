@@ -1,40 +1,28 @@
 <?php
 namespace App\Models;
 
-use App\Models\Buku;
+use App\Models\Peminjaman;
 use App\Models\User;
-use App\Models\Anggota;
-use App\Models\Pengembalian;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Peminjaman extends Model
+class Pengembalian extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $table = 'peminjaman';
+    protected $table = 'pengembalian';
 
     protected $guarded = [];
 
-    public function anggota()
+    public function peminjaman()
     {
-        return $this->belongsTo(Anggota::class);
-    }
-
-    public function buku()
-    {
-        return $this->belongsTo(Buku::class);
+        return $this->belongsTo(Peminjaman::class);
     }
 
     public function petugas()
     {
         return $this->belongsTo(User::class, 'petugas_id');
-    }
-
-    public function pengembalian()
-    {
-        return $this->hasOne(Pengembalian::class);
     }
 
     public static function boot()
@@ -53,5 +41,4 @@ class Peminjaman extends Model
             $model->petugas_id = auth()->check() ? auth()->user()->id : null;
         });
     }
-    
 }

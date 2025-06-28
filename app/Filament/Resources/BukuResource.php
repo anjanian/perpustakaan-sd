@@ -99,6 +99,12 @@ class BukuResource extends Resource
                 Tables\Filters\TrashedFilter::make(),
             ], layout: FiltersLayout::AboveContent)
             ->actions([
+                Tables\Actions\Action::make('qr')
+                    ->label('QR')
+                    ->color('warning')
+                    ->icon('heroicon-o-qr-code')
+                    ->url(fn($record) => route('qr-buku', ['bukuId' => $record->id]))
+                    ->openUrlInNewTab(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
                 Tables\Actions\RestoreAction::make(),

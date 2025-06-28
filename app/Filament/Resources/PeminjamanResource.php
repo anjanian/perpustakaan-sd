@@ -1,15 +1,15 @@
 <?php
 namespace App\Filament\Resources;
 
-use Filament\Forms;
-use Filament\Tables;
-use Filament\Forms\Form;
-use App\Models\Peminjaman;
-use Filament\Tables\Table;
-use Filament\Resources\Resource;
-use Illuminate\Database\Query\Builder;
-use Filament\Tables\Enums\FiltersLayout;
 use App\Filament\Resources\PeminjamanResource\Pages;
+use App\Models\Peminjaman;
+use Filament\Forms;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class PeminjamanResource extends Resource
 {
@@ -56,7 +56,6 @@ class PeminjamanResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->query(Peminjaman::where('status', 'Dipinjam'))
             ->columns([
                 Tables\Columns\TextColumn::make('anggota.nama')
                     ->label('Nama Anggota')
@@ -68,14 +67,32 @@ class PeminjamanResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('tanggal_pinjam')
                     ->label('Tanggal Pinjam')
-                    ->date()
+                    ->date('d F Y')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('tanggal_kembali')
                     ->label('Tanggal Kembali')
-                    ->date()
+                    ->date('d F Y')
                     ->sortable(),
             ])
             ->filters([
+                Tables\Filters\Filter::make('tanggal_dari')
+                    ->form([
+                        Forms\Components\DatePicker::make('tanggal_dari')
+                            ->label('Tanggal Pinjam Mulai'),
+                    ])
+                    ->query(function (Builder $query, array $data) {
+                        return $query
+                            ->when($data['tanggal_dari'], fn($q) => $q->whereDate('tanggal_pinjam', '>=', $data['tanggal_dari']));
+                    }),
+                Tables\Filters\Filter::make('tanggal_sampai')
+                    ->form([
+                        Forms\Components\DatePicker::make('tanggal_sampai')
+                            ->label('Tanggal Pinjam Sampai'),
+                    ])
+                    ->query(function (Builder $query, array $data) {
+                        return $query
+                            ->when($data['tanggal_sampai'], fn($q) => $q->whereDate('tanggal_pinjam', '<=', $data['tanggal_sampai']));
+                    }),
                 Tables\Filters\TrashedFilter::make(),
             ], layout: FiltersLayout::AboveContent)
             ->actions([

@@ -10,19 +10,24 @@ return new class extends Migration
     {
         Schema::create('peminjaman', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('anggota_id')->nullable();
-            $table->foreignId('buku_id')->nullable();
-            $table->foreignId('petugas_id')->nullable();
+            $table->foreignId('anggota_id')->nullable()->constrained('anggota')->nullOnDelete();
+            $table->foreignId('buku_id')->nullable()->constrained('buku')->nullOnDelete();
+            $table->foreignId('petugas_id')->nullable()->constrained('users')->nullOnDelete();
             $table->date('tanggal_pinjam');
             $table->date('tanggal_kembali')->nullable();
+            $table->timestamps();
+            $table->softDeletes();
+        });
+
+        Schema::create('pengembalian', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('peminjaman_id')->constrained('peminjaman')->onDelete('cascade');
+            $table->foreignId('petugas_id')->nullable()->constrained('users')->nullOnDelete();
+            $table->date('tanggal_kembali')->nullable();
             $table->date('tanggal_pengembalian')->nullable();
-            $table->enum('status', [
-                'Dipinjam',
-                'Dikembalikan',
-                'Terlambat',
-                'Hilang'
-            ])->default('Dipinjam');
-            $table->double('denda')->nullable();
+            $table->enum('status', ['Dikembalikan', 'Terlambat', 'Hilang'])->default('Dikembalikan');
+            $table->text('catatan')->nullable();
+            $table->double('denda')->default(0);
             $table->timestamps();
             $table->softDeletes();
         });
@@ -31,5 +36,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('peminjaman');
+        Schema::dropIfExists('pengembalian');
     }
 };

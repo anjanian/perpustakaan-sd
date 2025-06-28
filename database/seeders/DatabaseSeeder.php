@@ -36,15 +36,8 @@ class DatabaseSeeder extends Seeder
         }
 
         $kategori = [
-            ['nama' => 'Bahasa Indonesia'],
-            ['nama' => 'Bahasa Inggris'],
-            ['nama' => 'Matematika'],
-            ['nama' => 'Ilmu Pengetahuan Alam (IPA)'],
-            ['nama' => 'Ilmu Pengetahuan Sosial (IPS)'],
-            ['nama' => 'Pendidikan Agama'],
-            ['nama' => 'Pendidikan Jasmani dan Olahraga'],
-            ['nama' => 'Seni dan Budaya'],
-            ['nama' => 'Teknologi Informasi dan Komunikasi (TIK)'],
+            ['nama' => 'Fiksi'],
+            ['nama' => 'Non Fiksi'],
         ];
 
         foreach ($kategori as $k) {

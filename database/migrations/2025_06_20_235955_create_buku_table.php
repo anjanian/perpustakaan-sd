@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('buku', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('kategori_id')->nullable();
+            $table->foreignId('kategori_id')->nullable()->constrained('kategori')->nullOnDelete();
             $table->string('judul');
             $table->string('penulis');
             $table->string('penerbit');
