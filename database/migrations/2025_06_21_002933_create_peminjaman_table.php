@@ -25,7 +25,7 @@ return new class extends Migration
             $table->foreignId('petugas_id')->nullable()->constrained('users')->nullOnDelete();
             $table->date('tanggal_kembali')->nullable();
             $table->date('tanggal_pengembalian')->nullable();
-            $table->enum('status', ['Dikembalikan', 'Terlambat', 'Hilang'])->default('Dikembalikan');
+            $table->enum('status', ['Dikembalikan', 'Terlambat', 'Hilang', 'Rusak'])->default('Dikembalikan');
             $table->text('catatan')->nullable();
             $table->double('denda')->default(0);
             $table->timestamps();

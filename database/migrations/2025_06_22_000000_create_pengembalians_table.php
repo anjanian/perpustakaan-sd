@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('peminjaman_id')->constrained('peminjaman')->onDelete('cascade');
             $table->date('tanggal_kembali');
             $table->date('tanggal_pengembalian');
-            $table->string('status'); // Dikembalikan, terlambat, Hilang
+            $table->string('status'); // Dikembalikan, terlambat, Hilang, Rusak
             $table->decimal('denda', 10, 2)->nullable()->default(0.00);
             $table->text('catatan')->nullable();
             $table->timestamps();

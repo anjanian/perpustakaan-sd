@@ -99,6 +99,7 @@ class PengembalianResource extends Resource
                         'Dikembalikan' => 'Dikembalikan',
                         'Terlambat'    => 'Terlambat',
                         'Hilang'       => 'Hilang',
+                        'Rusak'        => 'Rusak',
                     ])
                     ->default('Dikembalikan')
                     ->required()
@@ -149,6 +150,7 @@ class PengembalianResource extends Resource
                         'Dikembalikan'                    => 'success',
                         'Terlambat'                       => 'warning',
                         'Hilang'                          => 'danger',
+                        'Rusak'                           => 'warning',
                         default                           => 'gray',
                     }),
                 Tables\Columns\TextColumn::make('denda')
@@ -180,6 +182,7 @@ class PengembalianResource extends Resource
                         'Dikembalikan' => 'Dikembalikan',
                         'Terlambat'    => 'Terlambat',
                         'Hilang'       => 'Hilang',
+                        'Rusak'        => 'Rusak',
                     ]),
                 Tables\Filters\TrashedFilter::make(),
             ], layout: FiltersLayout::AboveContent)

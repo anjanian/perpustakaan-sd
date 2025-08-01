@@ -129,7 +129,7 @@ class PeminjamanResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListPeminjamen::route('/'),
+            'index' => Pages\ListPeminjaman::route('/'),
         ];
     }
 }

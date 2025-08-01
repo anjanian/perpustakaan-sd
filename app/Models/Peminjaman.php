@@ -8,6 +8,8 @@ use App\Models\Pengembalian;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\Auth;
+
 
 class Peminjaman extends Model
 {
@@ -42,15 +44,15 @@ class Peminjaman extends Model
         parent::boot();
 
         static::creating(function ($model) {
-            $model->petugas_id = auth()->check() ? auth()->user()->id : null;
+            $model->petugas_id = auth::check() ? auth::user()->id : null;
         });
 
         static::updating(function ($model) {
-            $model->petugas_id = auth()->check() ? auth()->user()->id : null;
+            $model->petugas_id = auth::check() ? auth::user()->id : null;
         });
 
         static::deleting(function ($model) {
-            $model->petugas_id = auth()->check() ? auth()->user()->id : null;
+            $model->petugas_id = auth::check() ? auth::user()->id : null;
         });
     }
     
