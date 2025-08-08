@@ -6,7 +6,7 @@ use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 use Illuminate\Support\Facades\Route;
 
-class ListBukus extends ListRecords
+class ListBuku extends ListRecords
 {
     protected static string $resource = BukuResource::class;
 

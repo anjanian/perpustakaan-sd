@@ -131,7 +131,7 @@ class BukuResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index'  => Pages\ListBukus::route('/'),
+            'index'  => Pages\ListBuku::route('/'),
             'create' => Pages\CreateBuku::route('/create'),
             'edit'   => Pages\EditBuku::route('/{record}/edit'),
         ];
