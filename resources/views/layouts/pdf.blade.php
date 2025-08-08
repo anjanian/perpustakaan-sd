@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
@@ -19,13 +18,18 @@
             font-size: 13px;
         }
 
+        h3.report-title {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
         table.header-table {
             width: 100%;
             border-collapse: collapse;
         }
 
         .header-logo {
-            width: 70px;
+            width: 120px;
         }
 
         .header-text {
@@ -45,13 +49,13 @@
 <body>
     <table class="header-table">
         <tr>
-            <td width="20%">
+            <td width="15%">
                 <img src="{{ public_path('logo.jpg') }}" class="header-logo" alt="Logo">
             </td>
             <td class="header-text">
                 <h3>PERPUSTAKAAN</h3>
                 <h3>SDN TUGU UTARA 14 PAGI</h3>
-                <h3>@yield('title')</h3>
+                <h3 class="report-title">@yield('title')</h3>
             </td>
         </tr>
     </table>
@@ -60,5 +64,4 @@
 
     @yield('main')
 </body>
-
 </html>
