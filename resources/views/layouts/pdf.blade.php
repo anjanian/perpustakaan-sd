@@ -29,11 +29,11 @@
         }
 
         .header-logo {
-            width: 120px;
+            width: 100px;
         }
 
         .header-text {
-            text-align: left;
+            text-align: center;
             text-transform: uppercase;
         }
 
@@ -49,13 +49,13 @@
 <body>
     <table class="header-table">
         <tr>
-            <td width="15%">
+            <td width="5%">
                 <img src="{{ public_path('logo.jpg') }}" class="header-logo" alt="Logo">
             </td>
             <td class="header-text">
+                <h3 class="report-title">@yield('title')</h3>
                 <h3>PERPUSTAKAAN</h3>
                 <h3>SDN TUGU UTARA 14 PAGI</h3>
-                <h3 class="report-title">@yield('title')</h3>
             </td>
         </tr>
     </table>

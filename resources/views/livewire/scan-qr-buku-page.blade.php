@@ -3,7 +3,7 @@
         <img src="{{ asset('logo.jpg') }}" class="h-10 w-10 object-contain rounded-md" alt="Logo">
         <div class="whitespace-nowrap text-gray-800 text-center">
             <div class="text-sm font-bold">Perpustakaan</div>
-            <div class="text-sm font-semibold">SDN Tuku Utara 14 Pagi</div>
+            <div class="text-sm font-semibold">SDN Tugu Utara 14 Pagi</div>
         </div>
     </div>
 
