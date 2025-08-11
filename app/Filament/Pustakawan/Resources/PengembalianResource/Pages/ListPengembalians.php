@@ -1,16 +1,15 @@
 <?php
 
-namespace App\Filament\Pustakawan\Resources\PeminjamanResource\Pages;
+namespace App\Filament\Pustakawan\Resources\PengembalianResource\Pages;
 
-use App\Filament\Pustakawan\Resources\PeminjamanResource;
+use App\Filament\Pustakawan\Resources\PengembalianResource;
 use Filament\Actions;
 use Filament\Actions\Action;
 use Filament\Resources\Pages\ListRecords;
-use Illuminate\Support\Facades\Route;
 
-class ListPeminjaman extends ListRecords
+class ListPengembalian extends ListRecords
 {
-    protected static string $resource = PeminjamanResource::class;
+    protected static string $resource = PengembalianResource::class;
 
     protected function getHeaderActions(): array
     {
@@ -23,7 +22,7 @@ class ListPeminjaman extends ListRecords
                 ->label('Cetak PDF')
                 ->icon('heroicon-o-printer')
                 ->color('danger')
-                ->url(fn() => '/export/peminjaman?' . http_build_query(request()->query()))
+                ->url(fn() => '/export/pengembalian?' . http_build_query(request()->query()))
                 ->openUrlInNewTab(),
         ];
     }
