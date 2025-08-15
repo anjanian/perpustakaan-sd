@@ -1,0 +1,11 @@
+<?php
+
+namespace App\Filament\Pustakawan\Resources\BukuResource\Pages;
+
+use App\Filament\Pustakawan\Resources\BukuResource;
+use Filament\Resources\Pages\EditRecord;
+
+class EditBuku extends EditRecord
+{
+    protected static string $resource = BukuResource::class;
+}

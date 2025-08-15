@@ -18,8 +18,6 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
-use App\Filament\Pustakawan\Resources\AnggotaResource;
-
 
 class PustakawanPanelProvider extends PanelProvider
 {
@@ -28,10 +26,23 @@ class PustakawanPanelProvider extends PanelProvider
         return $panel
             ->id('pustakawan')
             ->path('pustakawan')
-            ->login(Login::class)
+            ->authGuard('pustakawan') // guard khusus pustakawan
+            ->darkMode(true)
+            ->favicon(asset('logo.jpg'))
+            ->login(\App\Filament\Pustakawan\Pages\Auth\Login::class)
+            ->spa()
+            ->font('Poppins')
+            ->brandLogo(fn () => view('logo'))
+            ->profile()
+            ->maxContentWidth('full')
+            ->globalSearchKeyBindings(['command+k', 'ctrl+k'])
+            ->sidebarWidth('18rem')
+            ->sidebarCollapsibleOnDesktop()
+            ->collapsedSidebarWidth('5rem')
             ->colors([
-                'primary' => Color::Amber,
+                'primary' => Color::Blue,
             ])
+            ->viteTheme('resources/css/filament/admin/theme.css') // pake tema sama
             ->discoverResources(in: app_path('Filament/Pustakawan/Resources'), for: 'App\\Filament\\Pustakawan\\Resources')
             ->discoverPages(in: app_path('Filament/Pustakawan/Pages'), for: 'App\\Filament\\Pustakawan\\Pages')
             ->discoverWidgets(in: app_path('Filament/Pustakawan/Widgets'), for: 'App\\Filament\\Pustakawan\\Widgets')
@@ -39,11 +50,9 @@ class PustakawanPanelProvider extends PanelProvider
                 Pages\Dashboard::class,
             ])
             ->widgets([
-                Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
+                \App\Filament\Pustakawan\Widgets\StatistikOverview::class,
             ])
             ->routes(function () {
-                // Load route-file pustakawan (tanpa prefix — Filament akan otomatis prefix ->path('pustakawan'))
                 require base_path('routes/pustakawan.php');
             })
             ->middleware([
@@ -59,7 +68,6 @@ class PustakawanPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-                // tetap gunakan role check di sini juga (opsional, karena route group di routes/pustakawan.php juga pakai role)
                 'role:pustakawan',
             ]);
     }

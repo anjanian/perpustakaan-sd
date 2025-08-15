@@ -76,6 +76,9 @@ class AnggotaResource extends Resource
                 Tables\Columns\TextColumn::make('jenis_kelamin')
                     ->sortable()
                     ->searchable(),
+                Tables\Columns\TextColumn::make('alamat')
+                    ->label('Alamat')
+                    ->limit(50),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('kelas_id')

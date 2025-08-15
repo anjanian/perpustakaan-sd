@@ -40,6 +40,10 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'pustakawan' => [
+            'driver' => 'session',
+            'provider' => 'users', // atau 'pustakawans' kalau nanti mau pisah tabel/model
+        ],
     ],
 
     /*

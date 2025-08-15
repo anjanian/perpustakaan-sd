@@ -79,7 +79,10 @@ class AnggotaResource extends Resource
                     ->limit(50),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('kelas_id')
+                    ->relationship('kelas', 'nama')
+                    ->label('Kelas'),
+                Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
