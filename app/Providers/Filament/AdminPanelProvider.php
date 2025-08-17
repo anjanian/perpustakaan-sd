@@ -31,6 +31,7 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('/')
+            ->authGuard('web')
             ->darkMode(true)
             ->favicon(asset('logo.jpg'))
             ->login(\App\Filament\Admin\Pages\Auth\Login::class)
