@@ -214,4 +214,52 @@ return [
 
     'partitioned' => env('SESSION_PARTITIONED_COOKIE', false),
 
+     /*
+    |--------------------------------------------------------------------------
+    | Custom Multiple Session Config
+    |--------------------------------------------------------------------------
+    |
+    | Tambahan untuk memisahkan session admin & pustakawan,
+    | supaya login mereka tidak saling tendang.
+    |
+    */
+
+    'sessions' => [
+
+        'admin' => [
+            'driver' => env('SESSION_DRIVER', 'database'),
+            'lifetime' => (int) env('SESSION_LIFETIME', 120),
+            'expire_on_close' => false,
+            'encrypt' => false,
+            'connection' => null,
+            'table' => 'sessions',
+            'store' => null,
+            'lottery' => [2, 100],
+            'cookie' => 'perpus_admin_session',
+            'path' => '/',
+            'domain' => env('SESSION_DOMAIN', null),
+            'secure' => env('SESSION_SECURE_COOKIE', false),
+            'http_only' => true,
+            'same_site' => 'lax',
+        ],
+
+        'pustakawan' => [
+            'driver' => env('SESSION_DRIVER', 'database'),
+            'lifetime' => (int) env('SESSION_LIFETIME', 120),
+            'expire_on_close' => false,
+            'encrypt' => false,
+            'connection' => null,
+            'table' => 'sessions',
+            'store' => null,
+            'lottery' => [2, 100],
+            'cookie' => 'perpus_pustakawan_session',
+            'path' => '/',
+            'domain' => env('SESSION_DOMAIN', null),
+            'secure' => env('SESSION_SECURE_COOKIE', false),
+            'http_only' => true,
+            'same_site' => 'lax',
+        ],
+
+    ],
+
 ];

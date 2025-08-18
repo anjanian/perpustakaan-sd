@@ -21,7 +21,7 @@ class BukuResource extends Resource
 
     protected static ?string $navigationLabel = 'Buku';
 
-    protected static ?string $navigationGroup = 'Master';
+    protected static ?string $navigationGroup = 'Data Master';
 
     protected static ?string $slug = 'buku';
 

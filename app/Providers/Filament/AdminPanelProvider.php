@@ -3,8 +3,8 @@
 namespace App\Providers\Filament;
 
 use App\Http\Controllers\ExportPdfController;
-use App\Livewire\QrBukuPage; // Tambahkan baris ini
-use App\Livewire\ScanQrBukuPage; // Tambahkan baris ini
+use App\Livewire\QrBukuPage;
+use App\Livewire\ScanQrBukuPage;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\Widgets;
@@ -12,15 +12,15 @@ use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
 use Filament\Http\Middleware\Authenticate;
 use App\Filament\Widgets\StatistikOverview;
-use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Cookie\Middleware\EncryptCookies;
+use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
+use Illuminate\Session\Middleware\StartSession;
 use Filament\Http\Middleware\AuthenticateSession;
-use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
+use Illuminate\Routing\Middleware\SubstituteBindings;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
-use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
-use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Support\Facades\Route;
 
 class AdminPanelProvider extends PanelProvider
@@ -30,8 +30,8 @@ class AdminPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->id('admin')
-            ->path('/')
-            ->authGuard('web')
+            ->path('admin')
+            ->authGuard('admin')
             ->darkMode(true)
             ->favicon(asset('logo.jpg'))
             ->login(\App\Filament\Admin\Pages\Auth\Login::class)
@@ -57,7 +57,7 @@ class AdminPanelProvider extends PanelProvider
             ->widgets([
                 StatistikOverview::class,
             ])
-            ->routes(function () { // Perbaikan di sini
+            ->routes(function () {
                 Route::get('/scan-qr-buku', ScanQrBukuPage::class)->name('scan-qr-buku');
                 Route::get('/buku/{bukuId}/qr-code', QrBukuPage::class)->name('qr-buku');
                 Route::get('/export/peminjaman', [ExportPdfController::class, 'peminjamanExport'])->name('export.peminjaman');
@@ -70,7 +70,7 @@ class AdminPanelProvider extends PanelProvider
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
-                StartSession::class,
+                StartSession::class.':admin', // Session khusus admin
                 AuthenticateSession::class,
                 ShareErrorsFromSession::class,
                 VerifyCsrfToken::class,
