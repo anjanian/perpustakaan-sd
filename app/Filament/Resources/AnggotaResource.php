@@ -14,6 +14,16 @@ class AnggotaResource extends Resource
 {
     protected static ?string $model = Anggota::class;
 
+    public static function getModelLabel(): string
+    {
+        return 'Anggota';
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return 'Anggota';
+    }
+
     protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
 
     protected static ?string $recordTitleAttribute = 'nama';

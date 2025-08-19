@@ -12,7 +12,7 @@ class Pengembalian extends Model
     use HasFactory;
     use SoftDeletes; // BARIS INI DITAMBAHKAN
 
-    protected $table = 'pengembalians';
+    protected $table = 'pengembalian';
 
     protected $fillable = [
         'peminjaman_id',

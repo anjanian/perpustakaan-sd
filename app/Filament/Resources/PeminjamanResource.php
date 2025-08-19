@@ -15,6 +15,16 @@ class PeminjamanResource extends Resource
 {
     protected static ?string $model = Peminjaman::class;
 
+    public static function getModelLabel(): string
+    {
+        return 'Peminjaman';
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return 'Peminjaman';
+    }
+
     protected static ?string $navigationIcon = 'heroicon-o-arrow-up-tray';
 
     protected static ?string $recordTitleAttribute = 'anggota.nama';

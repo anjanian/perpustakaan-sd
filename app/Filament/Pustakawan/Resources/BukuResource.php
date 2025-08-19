@@ -15,6 +15,16 @@ class BukuResource extends Resource
 {
     protected static ?string $model = Buku::class;
 
+    public static function getModelLabel(): string
+    {
+        return 'Buku';
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return 'Buku';
+    }
+
     protected static ?string $navigationIcon = 'heroicon-o-book-open';
 
     protected static ?string $recordTitleAttribute = 'judul';

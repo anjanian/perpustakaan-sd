@@ -17,6 +17,16 @@ class PengembalianResource extends Resource
 {
     protected static ?string $model = Pengembalian::class;
 
+    public static function getModelLabel(): string
+    {
+        return 'Pengembalian';
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return 'Pengembalian';
+    }
+
     protected static ?string $navigationIcon = 'heroicon-o-arrow-down-tray';
 
     protected static ?string $recordTitleAttribute = 'pengembalian.peminjaman.anggota.nama';
@@ -135,6 +145,10 @@ class PengembalianResource extends Resource
                 Tables\Columns\TextColumn::make('peminjaman.buku.judul')
                     ->label('Judul Buku')
                     ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('peminjaman.tanggal_pinjam')
+                    ->label('Tanggal Pinjam')
+                    ->date('d F Y')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('tanggal_kembali')
                     ->label('Tanggal Kembali')
