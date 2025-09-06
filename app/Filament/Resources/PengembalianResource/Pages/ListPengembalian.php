@@ -26,7 +26,7 @@ class ListPengembalian extends ListRecords
                 // ->url(fn(): ?string => Route::has('export.pengembalian')
                 //     ? route('export.pengembalian', request()->query())
                 //     : null)
-                ->url(fn() => '/export/pengembalian?' . http_build_query(request()->query()))
+                ->url(fn() => '/admin/export/pengembalian?' . http_build_query(request()->query()))
                 ->openUrlInNewTab(),
         ];
     }

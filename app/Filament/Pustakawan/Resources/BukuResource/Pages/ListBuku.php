@@ -20,7 +20,7 @@ class ListBuku extends ListRecords
                 ->label('Scan Buku')
                 ->icon('heroicon-o-qr-code')
                 // ->url(route('scan-qr-buku'))
-                ->url('/scan-qr-buku')
+                ->url('/pustakawan/scan-qr-buku')
                 ->color('warning'),
         ];
     }

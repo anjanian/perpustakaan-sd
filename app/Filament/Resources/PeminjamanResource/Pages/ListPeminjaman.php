@@ -26,7 +26,7 @@ class ListPeminjaman extends ListRecords
                 // ->url(fn(): ?string => Route::has('export.peminjaman')
                 //     ? route('export.peminjaman', request()->query())
                 //     : null)
-                ->url(fn() => '/export/peminjaman?' . http_build_query(request()->query()))
+                ->url(fn() => '/admin/export/peminjaman?' . http_build_query(request()->query()))
                 ->openUrlInNewTab(),
         ];
     }

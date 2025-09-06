@@ -23,7 +23,7 @@ class ListPeminjaman extends ListRecords
                 ->label('Cetak PDF')
                 ->icon('heroicon-o-printer')
                 ->color('danger')
-                ->url(fn() => '/export/peminjaman?' . http_build_query(request()->query()))
+                ->url(fn() => '/pustakawan/export/peminjaman?' . http_build_query(request()->query()))
                 ->openUrlInNewTab(),
         ];
     }

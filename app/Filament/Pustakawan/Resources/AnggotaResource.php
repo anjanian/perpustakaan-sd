@@ -107,7 +107,7 @@ class AnggotaResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListAnggotas::route('/'),
+            'index' => Pages\ListAnggota::route('/'),
             'create' => Pages\CreateAnggota::route('/create'),
             'edit' => Pages\EditAnggota::route('/{record}/edit'),
         ];

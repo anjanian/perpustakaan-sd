@@ -12,3 +12,4 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/export/peminjaman', [ExportPdfController::class, 'peminjamanExport'])->name('export.peminjaman');
     Route::get('/export/pengembalian', [ExportPdfController::class, 'pengembalianExport'])->name('export.pengembalian');
 });
+
